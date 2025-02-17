@@ -4,6 +4,5 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
-
 server:
-  port: 5003
+  port: 5050

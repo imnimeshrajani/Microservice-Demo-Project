@@ -1,5 +1,17 @@
 server:
-  port: 5001
+  port: 5002
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hotelservice
+    username: postgres
+    password: 25239223
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
 
 eureka:
   instance:
@@ -8,16 +20,5 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:5003/eureka/
-
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/hotelService
-    username: postgres
-    password: Y@sh81530
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
+      defaultZone: http://localhost:5050/eureka/
 
