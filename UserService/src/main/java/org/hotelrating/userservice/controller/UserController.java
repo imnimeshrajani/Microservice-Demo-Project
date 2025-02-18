@@ -1,5 +1,8 @@
 package org.hotelrating.userservice.controller;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.hotelrating.userservice.model.User;
 import org.hotelrating.userservice.services.UserService;
 import org.slf4j.Logger;
@@ -31,14 +34,16 @@ public class UserController {
 
 
     @GetMapping("/{userId}")
+    @CircuitBreaker(name = "ratingHotel", fallbackMethod = "ratingHotelFallback")
+    @Retry(name = "ratingHotel", fallbackMethod = "ratingHotelFallback")
+    @RateLimiter(name = "ratingHotel", fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> getSingleUser(@PathVariable String userId) {
         logger.info("Get Single User Handler: UserController");
         User user = userService.getUser(userId);
         return ResponseEntity.ok(user);
     }
 
-
-
+    //fallback method for ratingHotel
     public ResponseEntity<User> ratingHotelFallback(String userId, Exception ex) {
         ex.printStackTrace();
         User user = User.builder().email("dummy@gmail.com").name("Dummy").about("This user is created dummy because some service is down").userId("141234").build();
